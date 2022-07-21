@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const path = require("path");
+const multer = require("multer");
+require('dotenv').config();
 
 // Create app
 const app = express();
@@ -22,6 +25,27 @@ app.use((req, res, next) => {
   next();
 });
 
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg'
+    ) {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
 // Router redirect
 app.use('/topic', messageRoute);
 app.use('/auth', authRoutes);
@@ -31,11 +55,16 @@ app.use(
     swaggerUi.serve,
     swaggerUi.setup(swaggerDocument)
 );
+app.use(
+    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+);
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 mongoose.connect(
-        'mongodb+srv://keltoum:230396@cluster0.nnnr6m0.mongodb.net/?retryWrites=true&w=majority'
-    )
+    process.env.URLMONGO )
     .then(result => {
       app.listen(8080);
     })
     .catch(err => console.log(err));
+

@@ -9,12 +9,19 @@ exports.sendMessage = (req, res, next) => {
             errors: errors.array()
         });
     }
+    if (!req.file) {
+        const error = new Error('No image provided.');
+        error.statusCode = 422;
+        throw error;
+    }
+    const imageUrl = req.file.path;
     //Create a message from element of th request
     const title = req.body.title;
     const message = req.body.message;
     const messageSchema = new Message({
         title: title,
-        message: message
+        message: message,
+        imageUrl: imageUrl,
     });
     //Save the message in database
     messageSchema
