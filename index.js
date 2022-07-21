@@ -3,9 +3,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const messageRoute = require('./routes/message');
 const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth');
 
 // Create app
 const app = express();
+
 
 // Parse body
 app.use(bodyParser.json());
@@ -20,7 +22,7 @@ app.use((req, res, next) => {
 
 // Router redirect
 app.use('/topic', messageRoute);
-
+app.use('/auth', authRoutes);
 
 mongoose.connect(
         'mongodb+srv://keltoum:230396@cluster0.nnnr6m0.mongodb.net/?retryWrites=true&w=majority'

@@ -31,7 +31,7 @@ exports.sendMessage = (req, res, next) => {
 }
 
 exports.getMessage = (req, res, next) => {
-    Message.find()
+    Message.find().select(['title', 'message'])
         .then(messages => {
             res
                 .status(200)
