@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const messageRoute = require('./routes/message');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 // Create app
 const app = express();
@@ -23,6 +25,12 @@ app.use((req, res, next) => {
 // Router redirect
 app.use('/topic', messageRoute);
 app.use('/auth', authRoutes);
+
+app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
+);
 
 mongoose.connect(
         'mongodb+srv://keltoum:230396@cluster0.nnnr6m0.mongodb.net/?retryWrites=true&w=majority'
