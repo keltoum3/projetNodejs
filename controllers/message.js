@@ -30,3 +30,18 @@ exports.sendMessage = (req, res, next) => {
         });
 }
 
+exports.getMessage = (req, res, next) => {
+    Message.find()
+        .then(messages => {
+            res
+                .status(200)
+                .json({ log: 'Fetched message successfully.', message: messages });
+        })
+        .catch(err => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
+        });
+};
+
