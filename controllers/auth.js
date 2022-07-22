@@ -1,10 +1,13 @@
-const { validationResult } = require('express-validator/check');
+/*const { validationResult } = require('express-validator/check');
 //To avoid the sensitive data being visible from anyone
 const bcrypt = require('bcryptjs');
 //is used for stateless authentication mechanisms for users and providers, this means maintaining session is on the client-side instead of storing sessions on the server
 const jwt = require('jsonwebtoken');
 
-const User = require('../models/user');
+const User = require('../models/user');*/
+
+import {validationResult} from "express-validator";
+import user from "../models/user";
 
 exports.signup = (req, res, next) => {
   const errors = validationResult(req);
@@ -21,12 +24,12 @@ exports.signup = (req, res, next) => {
   bcrypt
     .hash(password, 12)
     .then(hashedPw => {
-      const user = new User({
+      const User = new user({
         email: email,
         password: hashedPw,
         name: name
       });
-      return user.save();
+      return User.save();
     })
     .then(result => {
       res.status(201).json({ message: 'User created!', userId: result._id });
@@ -79,3 +82,5 @@ exports.login = (req, res, next) => {
       next(err);
     });
 };
+
+export default class {}

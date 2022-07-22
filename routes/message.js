@@ -1,10 +1,14 @@
 // Import
-const express = require('express');
+/*const express = require('express');
 const messageController = require('../controllers/message');
-const isAuth = require('../middleware/is-auth');
+const isAuth = require('../middleware/is-auth');*/
 const { body } = require('express-validator/check');
 
 // Create router
+import express from "express";
+import messageController from "../controllers/message";
+import isAuth from "../middleware/is-auth";
+
 const router = express.Router();
 
 
@@ -47,4 +51,5 @@ router.put(
 
 
 // Export modules
+export default class {}
 module.exports = router;

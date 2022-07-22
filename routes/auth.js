@@ -1,15 +1,14 @@
-const express = require('express');
-const { body } = require('express-validator/check');
-
-const User = require('../models/user');
-const authController = require('../controllers/auth');
+import express from 'express'
+import authController from '../controllers/auth.js'
+import User from '../models/user.js'
+import  check from 'express-validator/check'
 
 const router = express.Router();
 
 router.put(
   '/signup',
   [
-    body('email')
+    check.body('email')
       .isEmail()
       .withMessage('Please enter a valid email.')
       .custom((value, { req }) => {
@@ -20,10 +19,10 @@ router.put(
         });
       })
       .normalizeEmail(),
-    body('password')
+      check.body('password')
       .trim()
       .isLength({ min: 5 }),
-    body('name')
+      check.body('name')
       .trim()
       .not()
       .isEmpty()
@@ -33,4 +32,5 @@ router.put(
 
 router.post('/login', authController.login);
 
+export default class {}
 module.exports = router;

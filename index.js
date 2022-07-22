@@ -1,16 +1,13 @@
 // Import all
-const express = require('express');
-const bodyParser = require('body-parser');
-const messageRoute = require('./routes/message');
-const mongoose = require('mongoose');
-const authRoutes = require('./routes/auth');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-const path = require("path");
-//used for uploading files
-const multer = require("multer");
-//module that loads environment variables from a .env file into process.env
-require('dotenv').config();
+import * as assert from "assert";
+import express from 'express'
+import mongoose from 'mongoose'
+import authRoutes from './routes/auth.js'
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json' assert {type: 'json'};;
+import messageRoute from './routes/message.js';
+import bodyParser from "body-parser";
+
 
 // Create app
 const app = express();
@@ -66,9 +63,9 @@ app.use(
 
 //Connect to db on port 8088
 mongoose.connect(
-    process.env.URLMONGO )
+        'mongodb+srv://keltoum:230396@cluster0.nnnr6m0.mongodb.net/?retryWrites=true&w=majority'
+    )
     .then(result => {
       app.listen(8080);
     })
     .catch(err => console.log(err));
-

@@ -1,10 +1,8 @@
 const { validationResult } = require('express-validator/check');
-const Message = require('../models/message');
 
+import Message from '../models/message'
 // Function for send message
 exports.sendMessage = (req, res, next) => {
-    console.log(req.file);
-    console.log(req);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -18,7 +16,7 @@ exports.sendMessage = (req, res, next) => {
         throw error;
     }
     const imageUrl = req.file.path;
-    //Create a message from element of th request
+    //Create a message from element of the request
     const title = req.body.title;
     const message = req.body.message;
     const messageSchema = new Message({
