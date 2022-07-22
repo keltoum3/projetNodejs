@@ -7,7 +7,6 @@ const authRoutes = require('./routes/auth');
 const fileRoute = require('./routes/file');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const path = require("path");
 //used for uploading files
 const multer = require("multer");
 //module that loads environment variables from a .env file into process.env

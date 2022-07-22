@@ -5,10 +5,10 @@ const isAuth = require('../middleware/is-auth');
 
 const router = express.Router();
 
-// GET /file/getAll
+//file/getAll
 router.get('/getAll', isAuth, fileController.getFiles);
 
-// POST /file/upload
+//file/upload
 router.post(
     '/upload',
     [
