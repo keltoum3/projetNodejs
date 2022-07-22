@@ -1,4 +1,4 @@
-// Import all
+// Import
 const express = require('express');
 const messageController = require('../controllers/message');
 const isAuth = require('../middleware/is-auth');
@@ -8,11 +8,13 @@ const { body } = require('express-validator/check');
 const router = express.Router();
 
 
-router.delete('/message/:id', isAuth, messageController.deleteMessage);
-
 // Router redirect
+router.delete('/message/:id', isAuth, messageController.deleteMessage);
 router.get('/message',isAuth, messageController.getMessage);
+router.post('/messageUpload',isAuth, messageController.uploadFile);
 
+//Send message (to db, no sender and mail to yet) with minimum length of title and message of 5
+//with check of authentication/token
 router.post(
     '/message',
     isAuth,

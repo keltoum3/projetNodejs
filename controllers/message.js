@@ -1,7 +1,10 @@
 const { validationResult } = require('express-validator/check');
 const Message = require('../models/message');
+
 // Function for send message
 exports.sendMessage = (req, res, next) => {
+    console.log(req.file);
+    console.log(req);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -38,11 +41,27 @@ exports.sendMessage = (req, res, next) => {
 }
 
 exports.getMessage = (req, res, next) => {
-    Message.find().select(['title', 'message'])
+    Message.find().select(['title', 'message', 'imageUrl'])
         .then(messages => {
             res
                 .status(200)
                 .json({ log: 'Fetched message successfully.', message: messages });
+        })
+        .catch(err => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
+        });
+};
+
+exports.uploadFile = (req, res, next) => {
+    console.log(req.file);
+    Message.find().select(['file'])
+        .then(file => {
+            res
+                .status(200)
+                .json({ log: 'Fetched file successfully.', file: file });
         })
         .catch(err => {
             if (!err.statusCode) {

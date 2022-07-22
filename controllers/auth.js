@@ -17,7 +17,7 @@ exports.signup = (req, res, next) => {
   const email = req.body.email;
   const name = req.body.name;
   const password = req.body.password;
-
+//cript the password
   bcrypt
     .hash(password, 12)
     .then(hashedPw => {
@@ -43,6 +43,7 @@ exports.login = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   let loadedUser;
+  //Check if the email exist
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
@@ -51,6 +52,7 @@ exports.login = (req, res, next) => {
         throw error;
       }
       loadedUser = user;
+      //check if the password is matching with the user's password
       return bcrypt.compare(password, user.password);
     })
     .then(isEqual => {
@@ -59,6 +61,7 @@ exports.login = (req, res, next) => {
         error.statusCode = 401;
         throw error;
       }
+      //creation of the token for an hour for the user
       const token = jwt.sign(
         {
           email: loadedUser.email,
