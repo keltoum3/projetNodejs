@@ -10,10 +10,6 @@ const messageSchema = new Schema({
         type: String,
         required: true
     },
-    imageUrl: {
-        type: String,
-        required: false
-    },
 });
 
 module.exports = mongoose.model('Message', messageSchema);

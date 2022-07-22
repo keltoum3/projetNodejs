@@ -3,8 +3,6 @@ const Message = require('../models/message');
 
 // Function for send message
 exports.sendMessage = (req, res, next) => {
-    console.log(req.file);
-    console.log(req);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -12,19 +10,12 @@ exports.sendMessage = (req, res, next) => {
             errors: errors.array()
         });
     }
-    if (!req.file) {
-        const error = new Error('No image provided.');
-        error.statusCode = 422;
-        throw error;
-    }
-    const imageUrl = req.file.path;
     //Create a message from element of th request
     const title = req.body.title;
     const message = req.body.message;
     const messageSchema = new Message({
         title: title,
         message: message,
-        imageUrl: imageUrl,
     });
     //Save the message in database
     messageSchema
@@ -41,7 +32,7 @@ exports.sendMessage = (req, res, next) => {
 }
 
 exports.getMessage = (req, res, next) => {
-    Message.find().select(['title', 'message', 'imageUrl'])
+    Message.find().select(['title', 'message'])
         .then(messages => {
             res
                 .status(200)
@@ -55,21 +46,6 @@ exports.getMessage = (req, res, next) => {
         });
 };
 
-exports.uploadFile = (req, res, next) => {
-    console.log(req.file);
-    Message.find().select(['file'])
-        .then(file => {
-            res
-                .status(200)
-                .json({ log: 'Fetched file successfully.', file: file });
-        })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
-        });
-};
 
 exports.deleteMessage = (req, res, next) => {
     const messageId = req.params.id;
@@ -95,7 +71,7 @@ exports.deleteMessage = (req, res, next) => {
         });
 };
 
-exports.updatePost = (req, res, next) => {
+exports.updateMessage = (req, res, next) => {
     const messageId = req.params.id;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

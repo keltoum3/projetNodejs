@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const messageRoute = require('./routes/message');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
+const fileRoute = require('./routes/file');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const path = require("path");
@@ -53,6 +54,7 @@ const fileFilter = (req, file, cb) => {
 // Router redirect
 app.use('/topic', messageRoute);
 app.use('/auth', authRoutes);
+app.use('/file', fileRoute);
 
 //swagger doc to check endPoint
 app.use(
